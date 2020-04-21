@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-export const Tag = ({ link, linkTo, bck, size, color, children }) => {
+export const Tag = ({ link, linkTo, bck, size, color, children, add }) => {
     const template = (
         <div
             style={{
+                ...add,
                 background: bck,
                 fontSize: size,
                 color: color,
