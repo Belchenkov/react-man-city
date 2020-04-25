@@ -30,6 +30,19 @@ class Enroll extends Component {
 
     }
 
+    updateForm(element) {
+        const newFormData = {...this.state.formData};
+        const newElement = { ...newFormData[element.id] };
+
+        newElement.value = element.event.target.value;
+        newFormData[element.id] = newElement;
+
+        this.setState({
+            formData: newFormData
+        })
+
+    }
+
     render() {
         return (
             <Fade>
@@ -42,6 +55,7 @@ class Enroll extends Component {
                             <FormField
                                 id="email"
                                 formData={this.state.formData.email}
+                                change={element => this.updateForm(element)}
                             />
                         </div>
                     </form>
