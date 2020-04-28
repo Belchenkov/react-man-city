@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import 'firebase/app';
 import 'firebase/database';
-import shadows from "@material-ui/core/styles/shadows";
 
 const config = {
     apiKey: "AIzaSyCY0BAHw-urY4y3wQBfNEyfGwLQAeOroKU",
@@ -17,8 +16,10 @@ firebase.initializeApp(config);
 
 const firebaseDB = firebase.database();
 const firebaseMatches = firebaseDB.ref('matches');
+const firebasePromotions = firebaseDB.ref('promotions');
 
 export {
     firebase,
-    firebaseMatches
+    firebaseMatches,
+    firebasePromotions
 }
