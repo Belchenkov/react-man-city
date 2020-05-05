@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from "react-router-dom";
 
 import PrivateRoute from './components/auth_routes/PrivateRoute';
+import PublicRoute from './components/auth_routes/PublicRoutes';
 
 import Layout from "./hoc/Layout";
 import Home from "./components/home";
@@ -12,9 +13,26 @@ const Routes = (props) => {
     return (
         <Layout>
             <Switch>
-                <PrivateRoute exact {...props} path="/dashboard" component={ Dashboard } />
-                <Route exact path="/" component={ Home } />
-                <Route exact path="/sign_in" component={ SignIn } />
+                <PrivateRoute
+                    exact
+                    {...props}
+                    path="/dashboard"
+                    component={ Dashboard }
+                />
+                <PublicRoute
+                    {...props}
+                    exact
+                    path="/sign_in"
+                    restricted={true}
+                    component={ SignIn }
+                />
+                <PublicRoute
+                    restricted={false}
+                    {...props}
+                    exact
+                    path="/"
+                    component={ Home }
+                />
             </Switch>
         </Layout>
     );
