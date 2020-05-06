@@ -8,11 +8,18 @@ import Layout from "./hoc/Layout";
 import Home from "./components/home";
 import SignIn from "./components/sign_in";
 import Dashboard from "./components/admin/Dashboard";
+import AdminMatches from "./components/admin/matches";
 
 const Routes = (props) => {
     return (
         <Layout>
             <Switch>
+                <PrivateRoute
+                    exact
+                    {...props}
+                    path="/admin_matches"
+                    component={ AdminMatches }
+                />
                 <PrivateRoute
                     exact
                     {...props}
