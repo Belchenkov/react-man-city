@@ -9,6 +9,7 @@ import Home from "./components/home";
 import SignIn from "./components/sign_in";
 import Dashboard from "./components/admin/Dashboard";
 import AdminMatches from "./components/admin/matches";
+import AddEditMatch from "./components/admin/matches/AddEditMatch";
 
 const Routes = (props) => {
     return (
@@ -19,6 +20,12 @@ const Routes = (props) => {
                     {...props}
                     path="/admin_matches"
                     component={ AdminMatches }
+                />
+                <PrivateRoute
+                    exact
+                    {...props}
+                    path="/admin_matches/edit_match/:id"
+                    component={ AddEditMatch }
                 />
                 <PrivateRoute
                     exact
