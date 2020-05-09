@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 
 import AdminLayout from "../../../hoc/AdminLayout";
 import FormField from "../../ui/form_fields";
-import { validate } from "../../ui/misc";
+import { firebaseLopper, validate } from "../../ui/misc";
+import {
+    firebaseTeams,
+    firebaseDB,
+    firebaseMatches
+} from "../../../firebase";
 
 class AddEditMatch extends Component {
     state = {
@@ -162,6 +167,82 @@ class AddEditMatch extends Component {
         }
     };
 
+    updateForm(element) {
+        const newFormData = {...this.state.formData};
+        const newElement = { ...newFormData[element.id] };
+
+        newElement.value = element.event.target.value;
+
+        // Validate
+        let validData = validate(newElement);
+        newElement.valid = validData[0];
+        newElement.validationMessage = validData[1];
+
+        newFormData[element.id] = newElement;
+
+        this.setState({
+            formData: newFormData,
+            formError: false
+        })
+    }
+
+    updateFields(match, teamOptions, teams, type, matchId) {
+        const newFormData = {
+            ...this.state.formData
+        };
+
+        for (let key in newFormData) {
+            if (match) {
+                newFormData[key].value = match[key];
+                newFormData[key].valid = true;
+            }
+
+            if (key === 'local' || key === 'away') {
+                newFormData[key].config.options = teamOptions;
+            }
+
+            this.setState({
+                matchId,
+                formType: type,
+                formData: newFormData,
+                teams
+            })
+        }
+    }
+
+    componentDidMount() {
+        //-LEmaPHoZMzLDoLOPaC7
+        const matchId = this.props.match.params.id;
+
+        const getTeams = (match, type) => {
+            firebaseTeams.once('value')
+                .then(snapshot => {
+                    const teams = firebaseLopper(snapshot);
+                    const teamOptions = [];
+
+                    snapshot.forEach(childSnapshot => {
+                        teamOptions.push({
+                            key: childSnapshot.val().shortName,
+                            value: childSnapshot.val().shortName
+                        })
+                    });
+                    this.updateFields(match, teamOptions, teams, type, matchId);
+                });
+        };
+
+        if (!matchId) {
+            // Add
+        } else {
+            firebaseDB.ref(`matches/${matchId}`)
+                .once('value')
+                .then(snapshot => {
+                    const match = snapshot.val();
+
+                    getTeams(match, 'Edit Match');
+                });
+        }
+    }
+
     render() {
         return (
             <AdminLayout>
@@ -200,14 +281,14 @@ class AddEditMatch extends Component {
                                 <div className="wrapper">
                                     <div className="left">
                                         <FormField
-                                            id="local"
+                                            id="away"
                                             formData={this.state.formData.away}
                                             change={element => this.updateForm(element)}
                                         />
                                     </div>
                                     <div>
                                         <FormField
-                                            id="resultLocal"
+                                            id="resultAway"
                                             formData={this.state.formData.resultAway}
                                             change={element => this.updateForm(element)}
                                         />
