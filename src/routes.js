@@ -18,14 +18,20 @@ const Routes = (props) => {
                 <PrivateRoute
                     exact
                     {...props}
-                    path="/admin_matches"
-                    component={ AdminMatches }
+                    path="/admin_matches/edit_match"
+                    component={ AddEditMatch }
                 />
                 <PrivateRoute
                     exact
                     {...props}
                     path="/admin_matches/edit_match/:id"
                     component={ AddEditMatch }
+                />
+                <PrivateRoute
+                    exact
+                    {...props}
+                    path="/admin_matches"
+                    component={ AdminMatches }
                 />
                 <PrivateRoute
                     exact
