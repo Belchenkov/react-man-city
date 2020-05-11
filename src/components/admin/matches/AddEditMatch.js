@@ -6,7 +6,7 @@ import { firebaseLopper, validate } from "../../ui/misc";
 import {
     firebaseTeams,
     firebaseDB,
-    firebaseMatches
+    firebaseMatches, firebase
 } from "../../../firebase";
 
 class AddEditMatch extends Component {
@@ -241,6 +241,61 @@ class AddEditMatch extends Component {
                     getTeams(match, 'Edit Match');
                 });
         }
+    }
+
+    submitForm(e) {
+        e.preventDefault();
+
+        let dataToSubmit = {};
+        let formIsValid = true;
+
+        for (let key in this.state.formData) {
+            dataToSubmit[key] = this.state.formData[key].value;
+            formIsValid = this.state.formData[key].valid && formIsValid;
+        }
+
+        this.state.teams.forEach(team => {
+            if (team.shortName === dataToSubmit.local) {
+                dataToSubmit['localThmb'] = team.thmb;
+            }
+            if (team.shortName === dataToSubmit.away) {
+                dataToSubmit['awayThmb'] = team.thmb;
+            }
+        });
+
+        if (formIsValid) {
+            if (this.state.formType === 'Edit Match') {
+                firebaseDB.ref(`matches/${this.state.matchId}`)
+                    .update(dataToSubmit)
+                    .then(() => {
+                        this.successForm('Update form');
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.setState({
+                            formError: true
+                        });
+                    });
+            } else {
+                /// add match
+            }
+        } else {
+            this.setState({
+                formError: true
+            });
+        }
+    }
+
+    successForm(message) {
+        this.setState({
+            formSuccess: message
+        });
+
+        setTimeout(() => {
+            this.setState({
+                formSuccess: ''
+            });
+        });
     }
 
     render() {
