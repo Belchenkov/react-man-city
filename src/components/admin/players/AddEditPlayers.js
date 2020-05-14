@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import AdminLayout from "../../../hoc/AdminLayout";
 import FormField from "../../ui/form_fields";
-
+import FileUploader from "../../ui/file_uploader";
+import {validate} from "../../ui/misc";
 import {
     firebasePlayers,
     firebaseDB,
     firebase,
     firebaseMatches
 } from "../../../firebase";
-import {validate} from "../../ui/misc";
 
 class AddEditPlayers extends Component {
     state = {
@@ -85,6 +85,14 @@ class AddEditPlayers extends Component {
                 valid: false,
                 validationMessage: '',
                 showLabel: true
+            },
+            image: {
+                element: 'image',
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: true
             }
         }
     };
@@ -141,6 +149,14 @@ class AddEditPlayers extends Component {
         })
     }
 
+    resetImage = () => {
+
+    }
+
+    storeFileName = () => {
+
+    }
+
     render() {
         return (
             <AdminLayout>
@@ -148,6 +164,14 @@ class AddEditPlayers extends Component {
                     <h2>{ this.state.formType }</h2>
                     <div>
                         <form onSubmit={event => this.submitForm(event)}>
+                            <FileUploader
+                                dir="players"
+                                tag="Player image"
+                                defaultImg={this.state.defaultImg}
+                                defaultImgName={this.state.formData.image.value}
+                                resetImage={() => this.resetImage()}
+                                fileName={fileName => this.storeFileName()}
+                            />
                             <FormField
                                 id="name"
                                 formData={this.state.formData.name}
