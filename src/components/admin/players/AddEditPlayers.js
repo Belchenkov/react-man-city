@@ -92,7 +92,7 @@ class AddEditPlayers extends Component {
                 validation: {
                     required: true
                 },
-                valid: true
+                valid: false
             }
         }
     };
@@ -130,11 +130,15 @@ class AddEditPlayers extends Component {
         }
     }
 
-    updateForm(element) {
+    updateForm(element, content = '') {
         const newFormData = {...this.state.formData};
         const newElement = { ...newFormData[element.id] };
 
-        newElement.value = element.event.target.value;
+        if (content === '') {
+            newElement.value = element.event.target.value;
+        } else {
+            newElement.value = content;
+        }
 
         // Validate
         let validData = validate(newElement);
@@ -150,11 +154,19 @@ class AddEditPlayers extends Component {
     }
 
     resetImage = () => {
+        const newFormData = {...this.state.formData};
 
+        newFormData['image'].value = '';
+        newFormData['image'].valid = false;
+
+        this.setState({
+            defaultImg: '',
+            formData: newFormData
+        });
     }
 
-    storeFileName = () => {
-
+    storeFileName = fileName => {
+        this.updateForm({ id: 'image' }, fileName);
     }
 
     render() {
@@ -170,7 +182,7 @@ class AddEditPlayers extends Component {
                                 defaultImg={this.state.defaultImg}
                                 defaultImgName={this.state.formData.image.value}
                                 resetImage={() => this.resetImage()}
-                                fileName={fileName => this.storeFileName()}
+                                fileName={fileName => this.storeFileName(fileName)}
                             />
                             <FormField
                                 id="name"

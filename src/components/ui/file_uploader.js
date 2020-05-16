@@ -37,6 +37,8 @@ class FileUploader extends Component {
                     fileURL: url
                 });
             });
+
+        this.props.fileName(fileName);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -49,13 +51,21 @@ class FileUploader extends Component {
         return null;
     }
 
+    uploadAgain = () => {
+        this.setState({
+            name: '',
+            isUploading: false,
+            fileURL: ''
+        });
+        this.props.resetImage();
+    }
+
     render() {
         return (
             <div>
                 {
                     !this.state.fileURL
-                        ? (
-                            <div>
+                        ?   <div>
                                 <div className="label_inputs">{ this.props.tag }</div>
                                 <FileUploader
                                     accept="image/*"
@@ -67,13 +77,11 @@ class FileUploader extends Component {
                                     onUploadSuccess={ this.handleUploadSuccess }
                                 />
                             </div>
-                        )
                         : null
                 }
                 {
                     this.state.isUploading
-                        ? (
-                            <div
+                        ?   <div
                                 className="progress"
                                 style={{ textAlign: 'center', margin: '30px 0' }}
                             >
@@ -82,13 +90,11 @@ class FileUploader extends Component {
                                     thickness={7}
                                 />
                             </div>
-                        )
                         : null
                 }
                 {
                     this.state.fileURL
-                        ? (
-                            <div className="image_upload_container">
+                        ?  <div className="image_upload_container">
                                 <img
                                     src={this.state.fileURL}
                                     style={{ width: '100%' }}
@@ -97,8 +103,7 @@ class FileUploader extends Component {
                                 <div className="remove" onClick={() => this.uploadAgain()}>
                                     Remove
                                 </div>
-                            </div>
-                        )
+                           </div>
                         : null
                 }
             </div>
