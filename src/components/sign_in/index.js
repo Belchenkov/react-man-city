@@ -58,7 +58,6 @@ class Index extends Component {
             formData: newFormData,
             formError: false
         })
-
     }
 
     submitForm(e) {
