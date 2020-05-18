@@ -105,9 +105,28 @@ class AddEditPlayers extends Component {
                 formType:'Add player'
             });
         } else {
+            firebaseDB.ref(`players/${playerId}`)
+                .once('value')
+                .then(snapshot => {
+                    const playerData = snapshot.val();
 
+                    firebase.storage()
+                        .ref('players')
+                        .child(playerData.image)
+                        .getDownloadURL()
+                        .then(url => {
+                            this.updateFields(playerData, playerId, 'Edit player', url);
+                        });
+                });
         }
+    }
 
+    successForm(message) {
+        this.setState({ formSuccess: message });
+
+        setTimeout(() => {
+            this.setState({ formSuccess: '' });
+        }, 2000);
     }
 
     submitForm(e) {
@@ -123,7 +142,13 @@ class AddEditPlayers extends Component {
 
         if (formIsValid) {
             if (this.state.formType === 'Edit player') {
-
+                firebaseDB.ref(`players/${this.state.playerId}`)
+                    .update(dataToSubmit)
+                    .then(() => {
+                        this.successForm('Update correctly');
+                    }).catch(err => {
+                        this.setState({ formError: true });
+                    });
             } else {
                 firebasePlayers.push(dataToSubmit)
                     .then(() => {
@@ -138,6 +163,22 @@ class AddEditPlayers extends Component {
                 formError: true
             });
         }
+    }
+
+    updateFields(player, playerId, formType, defaultImg) {
+        const newFormData = { ...this.state.formData };
+
+        for (let key in newFormData) {
+            newFormData[key].value = player[key];
+            newFormData[key].valid = true;
+        }
+
+        this.setState({
+            playerId,
+            defaultImg,
+            formType,
+            formData: newFormData
+        })
     }
 
     updateForm(element, content = '') {
@@ -186,14 +227,14 @@ class AddEditPlayers extends Component {
                     <h2>{ this.state.formType }</h2>
                     <div>
                         <form onSubmit={event => this.submitForm(event)}>
-                            <FileUploader
+                            {/*<FileUploader
                                 dir="players"
                                 tag="Player image"
                                 defaultImg={this.state.defaultImg}
                                 defaultImgName={this.state.formData.image.value}
                                 resetImage={() => this.resetImage()}
                                 fileName={fileName => this.storeFileName(fileName)}
-                            />
+                            />*/}
                             <FormField
                                 id="name"
                                 formData={this.state.formData.name}
