@@ -36,7 +36,7 @@ class Header extends Component {
                        <Button color="inherit">The team</Button>
                    </Link>
                    <Link to="/the_matches">
-                       <Button color="inherit">The team</Button>
+                       <Button color="inherit">The matches</Button>
                    </Link>
                </Toolbar>
            </AppBar>
