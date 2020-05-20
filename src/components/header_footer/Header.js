@@ -32,9 +32,9 @@ class Header extends Component {
                         </div>
                    </div>
 
-                   <Link to="/the_team">
+                  {/* <Link to="/the_team">
                        <Button color="inherit">The team</Button>
-                   </Link>
+                   </Link>*/}
                    <Link to="/the_matches">
                        <Button color="inherit">The matches</Button>
                    </Link>

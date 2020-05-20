@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 
 import PrivateRoute from './components/auth_routes/PrivateRoute';
 import PublicRoute from './components/auth_routes/PublicRoutes';
@@ -13,6 +13,7 @@ import AddEditMatch from "./components/admin/matches/AddEditMatch";
 import AdminPlayers from "./components/admin/players";
 import AddEditPlayers from "./components/admin/players/AddEditPlayers";
 import Team from "./components/team";
+import Matches from "./components/matches";
 
 const Routes = (props) => {
     return (
@@ -67,12 +68,19 @@ const Routes = (props) => {
                     restricted={true}
                     component={ SignIn }
                 />
-                <PublicRoute
+                {/*<PublicRoute
                     {...props}
                     exact
                     path="/the_team"
                     restricted={false}
                     component={ Team }
+                />*/}
+                <PublicRoute
+                    {...props}
+                    exact
+                    path="/the_matches"
+                    restricted={false}
+                    component={ Matches }
                 />
                 <PublicRoute
                     restricted={false}

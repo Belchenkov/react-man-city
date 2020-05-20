@@ -42,7 +42,7 @@ class Team extends Component {
     }
 
     showPlayersCategory(category) {
-        this.state.players
+        return this.state.players
             ? this.state.players.map((player, i) => {
                 return player.position === category
                     ? <Fade delay={20} left key={i}>
