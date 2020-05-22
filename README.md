@@ -2,6 +2,8 @@
 
 > Build a react project (Man City Team) with authentication, Material-UI, firebase.
 
+### [Demo](https://man-city-d0dfa.firebaseapp.com)
+
 In the project directory, you can run:
 
 ### `npm start`
